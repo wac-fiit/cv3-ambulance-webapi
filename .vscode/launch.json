@@ -9,8 +9,8 @@
       "type": "go",
       "request": "launch",
       "mode": "auto",
-      "program": "${workspaceFolder}/ambulance-webapi/cmd/ambulance-api-service",
-      "cwd": "${workspaceFolder}/ambulance-webapi"
+      "program": "${workspaceFolder}/cmd/ambulance-api-service",
+      "cwd": "${workspaceFolder}"
     }
   ]
 }
