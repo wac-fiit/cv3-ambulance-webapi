@@ -17,11 +17,11 @@ import (
 type AmbulancesAPI interface {
 
 
-    // CreateAmbulance Post /api/ambulance
+    // CreateAmbulance Post /cv3-api/ambulance
     // Saves new ambulance definition 
      CreateAmbulance(c *gin.Context)
 
-    // DeleteAmbulance Delete /api/ambulance/:ambulanceId
+    // DeleteAmbulance Delete /cv3-api/ambulance/:ambulanceId
     // Deletes specific ambulance 
      DeleteAmbulance(c *gin.Context)
 
