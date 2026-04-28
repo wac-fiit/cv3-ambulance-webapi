@@ -5,16 +5,18 @@ import (
 	"strings"
 
 	"context"
+	"time"
+
 	"github.com/gin-contrib/cors"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/wac-fiit/cv3-ambulance-webapi/internal/db_service"
-	"time"
 
 	"go.opentelemetry.io/contrib/exporters/autoexport"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/propagation"
+	metricsdk "go.opentelemetry.io/otel/sdk/metric"
 	tracesdk "go.opentelemetry.io/otel/sdk/trace"
 
 	"github.com/gin-gonic/gin"
@@ -51,6 +53,15 @@ func main() {
 	otel.SetTracerProvider(traceProvider)
 	otel.SetTextMapPropagator(propagation.TraceContext{})
 	defer traceProvider.Shutdown(ctx)
+
+	// initialize metric exporter
+	metricReader, err := autoexport.NewMetricReader(ctx)
+	if err != nil {
+		log.Fatal().Err(err).Msg("Failed to initialize metric reader")
+	}
+	metricProvider := metricsdk.NewMeterProvider(metricsdk.WithReader(metricReader))
+	otel.SetMeterProvider(metricProvider)
+	defer metricProvider.Shutdown(ctx)
 
 	log.Info().Msg("Server started")
 
